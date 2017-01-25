@@ -70,9 +70,44 @@ public class Client {
                     kick();
                 }
                 break;
+            case WAIT_NICKNAME:
+                String nickname = args[0];
+                if (!compte.getPseudo().isEmpty()) {
+                    kick();
+                } else if (compte.getName().equalsIgnoreCase(nickname)){
+                    send("AlEr");
+                } else {
+                    String s[] = {"admin", "modo", " ", "&", "é", "\"", "'",
+                            "(", "-", "è", "_", "ç", "à", ")", "=", "~", "#",
+                            "{", "[", "|", "`", "^", "@", "]", "}", "°", "+",
+                            "^", "$", "ù", "*", ",", ";", ":", "!", "<", ">",
+                            "¨", "£", "%", "µ", "?", ".", "/", "§", "\n"};
+                    boolean valide = true;
+                    for (String chara : s) {
+                        if (nickname.contains(chara)) {
+                            send("AlEs");
+                            valide = false;
+                            break;
+                        }
+                    }
+
+                    if (valide) {
+                        if (MySql.pseudoUsed(nickname)) {
+                            send("AlEs");
+                        } else {
+                            Console.println("> Définition nom de compte : " + nickname, Console.Color.YELLOW);
+                            compte.setPseudo(nickname);
+                            MySql.saveAccount(compte);
+                            status = Status.SERVER;
+                            sendInformations();
+                        }
+                    }
+
+                }
+                break;
             case SERVER:
                 String packet = args[0];
-                switch(packet.substring(0, 2)) {
+                switch (packet.substring(0, 2)) {
                     case "Af":
                         verifAccount();
                         break;
@@ -90,13 +125,16 @@ public class Client {
     }
 
     private void verifAccount() {
-        if (compte.isBanned()) {
+        if (compte.getPseudo().isEmpty()) {
+            send("AlEr");
+            status = Status.WAIT_NICKNAME;
+        } else if (compte.isBanned()) {
             send("AlEb");
             kick();
         } else if (compte.isBlocked()) {
             send("M0" + 667);
             kick();
-        } else if (compte.isLogged()){
+        } else if (compte.isLogged()) {
             kick();
         } else {
             sendInformations();
@@ -112,8 +150,9 @@ public class Client {
         send("AQ" + compte.getQuestion());
     }
 
+    @SuppressWarnings("deprecation")
     private void kick() {
-        session.closeNow();
+        session.close(false);
         Main.getClients().remove(sessionId);
     }
 

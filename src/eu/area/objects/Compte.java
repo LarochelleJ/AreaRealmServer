@@ -1,6 +1,7 @@
 package eu.area.objects;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by Meow on 2017-01-24.
@@ -16,13 +17,15 @@ public class Compte {
     private boolean banned;
     @Getter
     private boolean logged;
-    @Getter
+    @Getter @Setter
     private String pseudo;
     @Getter
     private String question;
     @Getter
     private int guid;
-    public Compte(String password, String saltKey, int m_password, int banned, int logged, String pseudo, String question, int guid) {
+    @Getter
+    private String name;
+    public Compte(String password, String saltKey, int m_password, int banned, int logged, String pseudo, String question, int guid, String name) {
         this.password = password;
         this.saltKey = saltKey;
         blocked = m_password > 0 ? true : false;
@@ -31,5 +34,6 @@ public class Compte {
         this.pseudo = pseudo;
         this.question = question;
         this.guid = guid;
+        this.name = name;
     }
 }

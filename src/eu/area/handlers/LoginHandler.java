@@ -36,4 +36,10 @@ public class LoginHandler extends IoHandlerAdapter {
             Console.println("> messageReceivedError: " + e.toString(), Console.Color.RED);
         }
     }
+
+    @Override
+    public void sessionClosed(IoSession session) throws Exception {
+        Main.getClients().remove(session.getId());
+        Console.println("> Session fermé : " + session.getId(), Console.Color.CYAN);
+    }
 }

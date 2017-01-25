@@ -35,7 +35,7 @@ public class MySql {
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                compte = new Compte(rs.getString("pass"), rs.getString("saltKey"), rs.getInt("m_password"), rs.getInt("banned"), rs.getInt("logged"), rs.getString("pseudo"), rs.getString("question"), rs.getInt("guid"));
+                compte = new Compte(rs.getString("pass"), rs.getString("saltKey"), rs.getInt("m_password"), rs.getInt("banned"), rs.getInt("logged"), rs.getString("pseudo"), rs.getString("question"), rs.getInt("guid"), name);
             }
             rs.close();
             ps.close();
@@ -44,5 +44,40 @@ public class MySql {
             e.printStackTrace();
         }
         return compte;
+    }
+
+    public static boolean pseudoUsed(String pseudo) {
+        boolean used = false;
+        try {
+            Connection co = createConnection();
+            String query = "SELECT pseudo FROM accounts WHERE pseudo LIKE ?;";
+            PreparedStatement ps = co.prepareStatement(query);
+            ps.setString(1, pseudo);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                used = true;
+            }
+            rs.close();
+            ps.close();
+            co.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return used;
+    }
+
+    public static void saveAccount(Compte compte) {
+        try {
+            Connection co = createConnection();
+            String query = "UPDATE accounts SET pseudo = ?;";
+            PreparedStatement ps = co.prepareStatement(query);
+            ps.setString(1, compte.getPseudo());
+            ps.execute();
+            ps.close();
+            co.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

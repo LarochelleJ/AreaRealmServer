@@ -2,7 +2,10 @@ package eu.area.kernel;
 
 import lombok.Getter;
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
+
+import java.util.List;
 
 /**
  * Created by Meow on 2017-01-24.
@@ -56,5 +59,12 @@ public class Config {
             exchange_ip = config.getString("server.exchange.ip");
             exchange_port = config.getInt("server.exchange.port");
         }
+    }
+
+    public List<HierarchicalConfiguration> getServers() {
+        if (config != null) {
+            return config.configurationsAt("GameServers.Server");
+        }
+        return null;
     }
 }

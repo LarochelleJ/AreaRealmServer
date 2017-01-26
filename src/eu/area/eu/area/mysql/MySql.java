@@ -30,12 +30,12 @@ public class MySql {
         Compte compte = null;
         try {
             Connection co = createConnection();
-            String query = "SELECT m_password, banned, pass, saltKey, logged, pseudo, question, guid FROM accounts WHERE account LIKE ? LIMIT 1;";
+            String query = "SELECT m_password, banned, pass, saltKey, logged, pseudo, question, guid, level FROM accounts WHERE account LIKE ? LIMIT 1;";
             PreparedStatement ps = co.prepareStatement(query);
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                compte = new Compte(rs.getString("pass"), rs.getString("saltKey"), rs.getInt("m_password"), rs.getInt("banned"), rs.getInt("logged"), rs.getString("pseudo"), rs.getString("question"), rs.getInt("guid"), name);
+                compte = new Compte(rs.getString("pass"), rs.getString("saltKey"), rs.getInt("m_password"), rs.getInt("banned"), rs.getInt("logged"), rs.getString("pseudo"), rs.getString("question"), rs.getInt("guid"), name, rs.getInt("level"));
             }
             rs.close();
             ps.close();

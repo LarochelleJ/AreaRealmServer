@@ -111,11 +111,23 @@ public class Client {
                     case "Af":
                         verifAccount();
                         break;
-                    case "Ax":
-                        send("AxK31556864852|7,5");
+                    case "Ax": // Envoi des serveurs avec nombre de personnages, 5 par défaut
+                        String packetToSend = "AxK31556864852";
+                        for (Serveur s : Main.getServeurs().values()) {
+                            if (s.isEnabled()) {
+                                if (compte.getGmLevel() >= s.getGmRequired()) {
+                                    packetToSend += "|" + s.getId() + ",5";
+                                }
+                            }
+                        }
+                        send(packetToSend);
                         break;
                     case "AX":
-                        send("AYK213.186.35.163:1099;" + compte.getGuid());
+                        int idServeur = Integer.valueOf(packet.substring(2));
+                        Serveur serveurCible = Main.getServeurs().get(idServeur);
+                        if (compte.getGmLevel() >= serveurCible.getGmRequired()) {
+                            send("AYK" + serveurCible.getIp() + ":" + serveurCible.getPort() + ";" + compte.getGuid());
+                        }
                         break;
                 }
                 break;
@@ -145,7 +157,19 @@ public class Client {
         send("Af0|0|0|1|-1");
         send("Ad" + compte.getPseudo());
         send("Ac0");
-        send("AH7;1;0;1");
+
+        // Envoi des serveurs et leur status au client
+        String packetToSend = "AH";
+        for (Serveur s : Main.getServeurs().values()) {
+            if (s.isEnabled()) {
+                if (compte.getGmLevel() >= s.getGmRequired()) {
+                    int state = s.isOnline() == true ? 1 : 0;
+                    packetToSend += s.getId() + ";" + state + ";0;1|";
+                }
+            }
+        }
+        send(packetToSend);
+
         send("AlK" + 1);
         send("AQ" + compte.getQuestion());
     }

@@ -25,7 +25,9 @@ public class Compte {
     private int guid;
     @Getter
     private String name;
-    public Compte(String password, String saltKey, int m_password, int banned, int logged, String pseudo, String question, int guid, String name) {
+    @Getter
+    private int gmLevel;
+    public Compte(String password, String saltKey, int m_password, int banned, int logged, String pseudo, String question, int guid, String name, int gmLevel) {
         this.password = password;
         this.saltKey = saltKey;
         blocked = m_password > 0 ? true : false;
@@ -35,5 +37,6 @@ public class Compte {
         this.question = question;
         this.guid = guid;
         this.name = name;
+        this.gmLevel = gmLevel;
     }
 }

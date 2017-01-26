@@ -70,9 +70,10 @@ public class MySql {
     public static void saveAccount(Compte compte) {
         try {
             Connection co = createConnection();
-            String query = "UPDATE accounts SET pseudo = ?;";
+            String query = "UPDATE accounts SET pseudo = ? WHERE guid = ?;";
             PreparedStatement ps = co.prepareStatement(query);
             ps.setString(1, compte.getPseudo());
+            ps.setInt(2, compte.getGuid());
             ps.execute();
             ps.close();
             co.close();

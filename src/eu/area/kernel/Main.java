@@ -9,8 +9,7 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.mina.core.session.IoSession;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 
 public class Main {
@@ -24,6 +23,7 @@ public class Main {
     private static HashMap<Long, Client> clients = new HashMap<Long, Client>();
     @Getter
     private static HashMap<Integer, Serveur> serveurs;
+    private static Timer refreshServerState = new Timer();
 
     public static void main(String[] args) {
         config = new Config();
@@ -31,6 +31,15 @@ public class Main {
         login.start();
         Console.println("> Chargements des informations sur les serveurs de jeu", Console.Color.GREEN);
         loadServer();
+        Console.println("> Lancement du timer d'actualisation du status des serveurs de jeu", Console.Color.YELLOW);
+        refreshServerState.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                for (Serveur s : serveurs.values()) {
+                    s.verifIfOnline();
+                }
+            }
+        }, 0, 500); // 500 ms (1/2 seconde)
         Console.println("> Début de la lecture des commandes", Console.Color.GREEN);
         while (isRunning) {
             executeCommand(systemConsole.readLine());

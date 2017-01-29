@@ -20,6 +20,8 @@ public class Serveur {
     private String ip;
     @Getter
     private int port;
+    @Getter
+    private boolean online;
 
     public Serveur(int id, int enabled, int gmRequired, String ip, int port) {
         this.id = id;
@@ -27,16 +29,16 @@ public class Serveur {
         this.gmRequired = gmRequired;
         this.ip = ip;
         this.port = port;
+        verifIfOnline();
     }
 
-    public boolean isOnline() {
-        boolean online = true;
+    public void verifIfOnline() {
+        online = true;
         try {
             Socket s  = new Socket(InetAddress.getByName(ip), port);
             s.close();
         } catch (Exception e) {
             online = false;
         }
-        return online;
     }
 }

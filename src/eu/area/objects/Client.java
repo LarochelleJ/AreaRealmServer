@@ -26,7 +26,7 @@ public class Client {
     private IoSession session;
     @Getter
     private String key;
-    @Setter
+    @Setter @Getter
     private Status status;
     private Compte compte;
 
@@ -151,11 +151,7 @@ public class Client {
         }
     }
 
-    private void sendInformations() {
-        send("Af0|0|0|1|-1");
-        send("Ad" + compte.getPseudo());
-        send("Ac0");
-
+    public void sendServersStatus() {
         // Envoi des serveurs et leur status au client
         String packetToSend = "AH";
         for (Serveur s : Main.getServeurs().values()) {
@@ -167,7 +163,13 @@ public class Client {
             }
         }
         send(packetToSend);
+    }
 
+    private void sendInformations() {
+        send("Af0|0|0|1|-1");
+        send("Ad" + compte.getPseudo());
+        send("Ac0");
+        sendServersStatus();
         send("AlK" + 1);
         send("AQ" + compte.getQuestion());
     }

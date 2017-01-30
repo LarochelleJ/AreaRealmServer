@@ -1,6 +1,7 @@
 package eu.area.objects;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -22,6 +23,8 @@ public class Serveur {
     private int port;
     @Getter
     private boolean online;
+    @Getter @Setter
+    private boolean onlineBefore;
 
     public Serveur(int id, int enabled, int gmRequired, String ip, int port) {
         this.id = id;
@@ -30,6 +33,7 @@ public class Serveur {
         this.ip = ip;
         this.port = port;
         verifIfOnline();
+        onlineBefore = online;
     }
 
     public void verifIfOnline() {

@@ -30,12 +30,12 @@ public class MySql {
         Compte compte = null;
         try {
             Connection co = createConnection();
-            String query = "SELECT m_password, banned, pass, saltKey, logged, pseudo, question, guid, level FROM accounts WHERE account LIKE ? LIMIT 1;";
+            String query = "SELECT m_password, banned, banned_time, pass, saltKey, logged, pseudo, question, guid, level FROM accounts WHERE account LIKE ? LIMIT 1;";
             PreparedStatement ps = co.prepareStatement(query);
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                compte = new Compte(rs.getString("pass"), rs.getString("saltKey"), rs.getInt("m_password"), rs.getInt("banned"), rs.getInt("logged"), rs.getString("pseudo"), rs.getString("question"), rs.getInt("guid"), name, rs.getInt("level"));
+                compte = new Compte(rs.getString("pass"), rs.getString("saltKey"), rs.getInt("m_password"), rs.getInt("banned"), rs.getInt("logged"), rs.getString("pseudo"), rs.getString("question"), rs.getInt("guid"), name, rs.getInt("level"), rs.getInt("banned_time"));
             }
             rs.close();
             ps.close();
@@ -77,6 +77,19 @@ public class MySql {
             ps.execute();
             ps.close();
             co.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void unbanAccount(int guid) {
+        try {
+            Connection co = createConnection();
+            String query = "UPDATE accounts SET banned_time = 0, banned = 0 WHERE guid = ?;";
+            PreparedStatement ps = co.prepareStatement(query);
+            ps.setInt(1, guid);
+            ps.execute();
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

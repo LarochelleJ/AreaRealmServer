@@ -54,7 +54,7 @@ public class Client {
             case WAIT_ACCOUNT:
                 compte = MySql.getAccountByName(args[0]);
                 if (compte == null) {
-                    send("AlEa");
+                    send("AlEf");
                     kick();
                 } else {
                     status = Status.WAIT_PASSWORD;
@@ -156,7 +156,7 @@ public class Client {
         String packetToSend = "AH";
         for (Serveur s : Main.getServeurs().values()) {
             if (s.isEnabled()) {
-                if (compte.getGmLevel() >= s.getGmRequired()) {
+                if (compte != null && compte.getGmLevel() >= s.getGmRequired()) {
                     int state = s.isOnline() == true ? 1 : 0;
                     packetToSend += s.getId() + ";" + state + ";0;1|";
                 }

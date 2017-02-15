@@ -35,20 +35,16 @@ public class Main {
         refreshServerState.schedule(new TimerTask() {
             @Override
             public void run() {
-                boolean serversNeedStateRefresh = false;
                 for (Serveur s : serveurs.values()) {
                     s.verifIfOnline();
                     if (s.isOnline() != s.isOnlineBefore()) {
-                        serversNeedStateRefresh = true;
-                    }
-                    s.setOnlineBefore(s.isOnline());
-                }
-                if (serversNeedStateRefresh) {
-                    for (Client c : clients.values()) {
-                        if (c.getStatus() == Client.Status.SERVER) {
-                            c.sendServersStatus();
+                        for (Client c : clients.values()) {
+                            if (c.getStatus() == Client.Status.SERVER) {
+                                c.sendServersStatus();
+                            }
                         }
                     }
+                    s.setOnlineBefore(s.isOnline());
                 }
             }
         }, 0, 500); // 500 ms (1/2 seconde)

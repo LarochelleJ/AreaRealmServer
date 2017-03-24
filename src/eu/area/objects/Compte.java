@@ -28,7 +28,9 @@ public class Compte {
     private String name;
     @Getter
     private int gmLevel;
-    public Compte(String password, String saltKey, int m_password, int banned, int logged, String pseudo, String question, int guid, String name, int gmLevel, int bannedTime) {
+    @Getter
+    private boolean vip;
+    public Compte(String password, String saltKey, int m_password, int banned, int logged, String pseudo, String question, int guid, String name, int gmLevel, int bannedTime, int vip) {
         this.password = password;
         this.saltKey = saltKey;
         blocked = m_password > 0 ? true : false;
@@ -43,5 +45,6 @@ public class Compte {
         this.guid = guid;
         this.name = name;
         this.gmLevel = gmLevel;
+        this.vip = vip > 0 ? true : false;
     }
 }

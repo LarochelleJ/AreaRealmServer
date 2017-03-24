@@ -115,7 +115,7 @@ public class Client {
                         String packetToSend = "AxK31556864852";
                         for (Serveur s : Main.getServeurs().values()) {
                             if (s.isEnabled()) {
-                                if (compte.getGmLevel() >= s.getGmRequired()) {
+                                if (compte.isVip() || compte.getGmLevel() >= s.getGmRequired()) {
                                     packetToSend += "|" + s.getId() + ",5";
                                 }
                             }
@@ -125,7 +125,7 @@ public class Client {
                     case "AX":
                         int idServeur = Integer.valueOf(packet.substring(2));
                         Serveur serveurCible = Main.getServeurs().get(idServeur);
-                        if (compte.getGmLevel() >= serveurCible.getGmRequired()) {
+                        if (compte.isVip() || compte.getGmLevel() >= serveurCible.getGmRequired()) {
                             send("AYK" + serveurCible.getIp() + ":" + serveurCible.getPort() + ";" + compte.getGuid());
                         }
                         break;
@@ -156,7 +156,7 @@ public class Client {
         String packetToSend = "AH";
         for (Serveur s : Main.getServeurs().values()) {
             if (s.isEnabled()) {
-                if (compte != null && compte.getGmLevel() >= s.getGmRequired()) {
+                if (compte != null && (compte.getGmLevel() >= s.getGmRequired() || compte.isVip())) {
                     int state = s.isOnline() == true ? 1 : 0;
                     packetToSend += s.getId() + ";" + state + ";0;1|";
                 }

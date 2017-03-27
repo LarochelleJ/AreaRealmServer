@@ -3,9 +3,11 @@ package eu.area.objects;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * Created by Meow on 2017-01-26.
@@ -23,7 +25,8 @@ public class Serveur {
     private int port;
     @Getter
     private boolean online;
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean onlineBefore;
 
     public Serveur(int id, int enabled, int gmRequired, String ip, int port) {
@@ -38,10 +41,11 @@ public class Serveur {
 
     public void verifIfOnline() {
         online = true;
-        try {
-            Socket s  = new Socket(InetAddress.getByName(ip), port);
-            s.close();
-        } catch (Exception e) {
+        try (Socket s = new Socket(InetAddress.getByName(ip), port)) {
+            if (s.isConnected()) {
+                s.close();
+            }
+        } catch (IOException e) {
             online = false;
         }
     }

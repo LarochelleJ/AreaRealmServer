@@ -39,8 +39,12 @@ public class Main {
                     s.verifIfOnline();
                     if (s.isOnline() != s.isOnlineBefore()) {
                         for (Client c : clients.values()) {
-                            if (c.getStatus() == Client.Status.SERVER) {
-                                c.sendServersStatus();
+                            try {
+                                if (c.getStatus() == Client.Status.SERVER) {
+                                    c.sendServersStatus();
+                                }
+                            } catch (Exception e) {
+                                Console.println("> Erreur : " + e.toString(), Console.Color.RED);
                             }
                         }
                     }
@@ -78,9 +82,13 @@ public class Main {
         Console.println("> Tentative du chargement des configurations serveurs", Console.Color.GREEN);
         if (serversConfig != null) {
             Console.println("> Début du chargement des configurations serveurs", Console.Color.YELLOW);
-            for (HierarchicalConfiguration hc : serversConfig) {
-                Serveur s = new Serveur(hc.getInt("id"), hc.getInt("enabled"), hc.getInt("gmAccess"), hc.getString("ip"), hc.getInt("port"));
-                serveurs.put(s.getId(), s);
+            try {
+                for (HierarchicalConfiguration hc : serversConfig) {
+                    Serveur s = new Serveur(hc.getInt("id"), hc.getInt("enabled"), hc.getInt("gmAccess"), hc.getString("ip"), hc.getInt("port"));
+                    serveurs.put(s.getId(), s);
+                }
+            } catch (Exception e) {
+                Console.println(" > Erreur : " + e.toString(), Console.Color.RED);
             }
             Main.serveurs = serveurs;
             Console.println("> Chargement des configurations serveurs réussite !", Console.Color.GREEN);

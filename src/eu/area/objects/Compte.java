@@ -30,7 +30,9 @@ public class Compte {
     private int gmLevel;
     @Getter
     private boolean vip;
-    public Compte(String password, String saltKey, int m_password, int banned, int logged, String pseudo, String question, int guid, String name, int gmLevel, int bannedTime, int vip) {
+    @Getter
+    private boolean valid;
+    public Compte(String password, String saltKey, int m_password, int banned, int logged, String pseudo, String question, int guid, String name, int gmLevel, int bannedTime, int vip, int m_reg) {
         this.password = password;
         this.saltKey = saltKey;
         blocked = m_password > 0 ? true : false;
@@ -46,5 +48,6 @@ public class Compte {
         this.name = name;
         this.gmLevel = gmLevel;
         this.vip = vip > 0 ? true : false;
+        this.valid = m_reg > 0 ? false : true;
     }
 }

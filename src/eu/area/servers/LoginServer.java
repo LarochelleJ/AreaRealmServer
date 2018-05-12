@@ -30,7 +30,7 @@ public class LoginServer {
         acceptor.getSessionConfig().setReadBufferSize(2048);
         ((NioSocketAcceptor)acceptor).setReuseAddress(true);
         try {
-            acceptor.bind(new InetSocketAddress(Main.getConfig().getLogin_ip(), Main.getConfig().getLogin_port()));
+            acceptor.bind(new InetSocketAddress(Main.getConfig().getLogin_port()));
         } catch (IOException e) {
             Main.setRunning(false);
             Console.println("> Démarrage du serveur aborté !", Console.Color.RED);

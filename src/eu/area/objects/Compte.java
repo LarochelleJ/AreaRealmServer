@@ -4,6 +4,8 @@ import eu.area.eu.area.mysql.MySql;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * Created by Meow on 2017-01-24.
  */
@@ -32,6 +34,8 @@ public class Compte {
     private boolean vip;
     @Getter
     private boolean valid;
+    @Getter @Setter
+    private List<String> ipAllowed;
     public Compte(String password, String saltKey, int m_password, int banned, int logged, String pseudo, String question, int guid, String name, int gmLevel, int bannedTime, int vip, int m_reg) {
         this.password = password;
         this.saltKey = saltKey;

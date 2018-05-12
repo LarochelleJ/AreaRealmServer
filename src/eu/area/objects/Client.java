@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.mina.core.session.IoSession;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.security.MessageDigest;
 import java.util.Random;
 
@@ -52,9 +54,14 @@ public class Client {
                 }
                 break;
             case WAIT_ACCOUNT:
+                InetSocketAddress socketAddress = (InetSocketAddress) session.getRemoteAddress();
+                InetAddress inetAddress = socketAddress.getAddress();
                 compte = MySql.getAccountByName(args[0]);
                 if (compte == null) {
                     send("AlEf");
+                    kick();
+                } else if (!compte.getIpAllowed().isEmpty() && !compte.getIpAllowed().contains(inetAddress.getHostAddress())) {
+                    send("M0" + 668);
                     kick();
                 } else {
                     status = Status.WAIT_PASSWORD;
@@ -126,7 +133,7 @@ public class Client {
                         int idServeur = Integer.valueOf(packet.substring(2));
                         Serveur serveurCible = Main.getServeurs().get(idServeur);
                         if (compte.isVip() || compte.getGmLevel() >= serveurCible.getGmRequired()) {
-                            send("AYK" + serveurCible.getIp() + ":" + serveurCible.getPort() + ";" + compte.getGuid());
+                            send("AYK" + serveurCible.getIpPlayer() + ":" + serveurCible.getPort() + ";" + compte.getGuid());
                         }
                         break;
                 }
@@ -173,7 +180,7 @@ public class Client {
         send("Ad" + compte.getPseudo());
         send("Ac0");
         sendServersStatus();
-        send("AlK" + 1);
+        send("AlK" + (compte.getGmLevel() > 0 ? 1 : 0));
         send("AQ" + compte.getQuestion());
     }
 

@@ -52,7 +52,7 @@ public class MySql {
             PreparedStatement ps = co.prepareStatement(query);
             ps.setInt(1, compte.getGuid());
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 ipAllowed.add(rs.getString("ip"));
             }
             rs.close();

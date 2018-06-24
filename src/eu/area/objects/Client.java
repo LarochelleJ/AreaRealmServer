@@ -57,6 +57,7 @@ public class Client {
                 InetSocketAddress socketAddress = (InetSocketAddress) session.getRemoteAddress();
                 InetAddress inetAddress = socketAddress.getAddress();
                 compte = MySql.getAccountByName(args[0]);
+                Console.println(args[0] + " : " + inetAddress.getHostAddress(), Console.Color.GREEN);
                 if (compte == null) {
                     send("AlEf");
                     kick();

@@ -28,15 +28,18 @@ public class Serveur {
     @Getter
     private String ipPlayer;
     @Getter
+    private String ipAdmin;
+    @Getter
     @Setter
     private boolean onlineBefore;
 
-    public Serveur(int id, int enabled, int gmRequired, String ip, String ipPlayer, int port) {
+    public Serveur(int id, int enabled, int gmRequired, String ip, String ipPlayer, int port, String ipAdmin) {
         this.id = id;
         this.enabled = enabled == 1 ? true : false;
         this.gmRequired = gmRequired;
         this.ip = ip;
         this.ipPlayer = ipPlayer;
+        this.ipAdmin = ipAdmin;
         this.port = port;
         verifIfOnline();
         onlineBefore = online;

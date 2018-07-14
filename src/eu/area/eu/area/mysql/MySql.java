@@ -45,23 +45,26 @@ public class MySql {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        List<String> ipAllowed = new ArrayList<String>();
-        try {
-            Connection co = createConnection();
-            String query = "SELECT * FROM ipProtege WHERE compte = ? AND codeValidation = 'ok';";
-            PreparedStatement ps = co.prepareStatement(query);
-            ps.setInt(1, compte.getGuid());
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                ipAllowed.add(rs.getString("ip"));
+
+        if (compte != null) {
+            List<String> ipAllowed = new ArrayList<String>();
+            try {
+                Connection co = createConnection();
+                String query = "SELECT * FROM ipProtege WHERE compte = ? AND codeValidation = 'ok';";
+                PreparedStatement ps = co.prepareStatement(query);
+                ps.setInt(1, compte.getGuid());
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    ipAllowed.add(rs.getString("ip"));
+                }
+                rs.close();
+                ps.close();
+                co.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            rs.close();
-            ps.close();
-            co.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            compte.setIpAllowed(ipAllowed);
         }
-        compte.setIpAllowed(ipAllowed);
         return compte;
     }
 

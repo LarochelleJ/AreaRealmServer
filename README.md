@@ -5,7 +5,7 @@ Ce readme docummente tout ce dont vous avez besoin de savoir
 ### À quoi sert ce repo ? ###
 
 * Serveur de connexion pour serveur privé Dofus
-* Version 1.0.2
+* Version 1.0.5
 * Par Jason Larochelle
 
 ###  Comment compiller ce projet ? ###

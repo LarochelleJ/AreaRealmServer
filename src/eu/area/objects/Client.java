@@ -134,7 +134,7 @@ public class Client {
                         int idServeur = Integer.valueOf(packet.substring(2));
                         Serveur serveurCible = Main.getServeurs().get(idServeur);
                         if (compte.isVip() || compte.getGmLevel() >= serveurCible.getGmRequired()) {
-                            send("AYK" + (compte.getGmLevel() > 3 ? serveurCible.getIpAdmin() : serveurCible.getIpPlayer()) + ":" + serveurCible.getPort() + ";" + compte.getGuid());
+                            send("AYK" + (compte.getGmLevel() > 2 ? serveurCible.getIpAdmin() : serveurCible.getIpPlayer()) + ":" + serveurCible.getPort() + ";" + compte.getGuid());
                         }
                         break;
                 }

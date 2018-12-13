@@ -84,7 +84,7 @@ public class Main {
             Console.println("> Début du chargement des configurations serveurs", Console.Color.YELLOW);
             try {
                 for (HierarchicalConfiguration hc : serversConfig) {
-                    Serveur s = new Serveur(hc.getInt("id"), hc.getInt("enabled"), hc.getInt("gmAccess"), hc.getString("ip"), hc.getString("ipPlayer"), hc.getInt("port"), hc.getString("ipAdmin"));
+                    Serveur s = new Serveur(hc.getInt("id"), hc.getInt("enabled"), hc.getInt("gmAccess"), hc.getString("ip"), hc.getString("ipPlayer"), hc.getString("ipv6"), hc.getInt("port"), hc.getString("ipAdmin"), hc.getString("ipv6Admin"));
                     serveurs.put(s.getId(), s);
                 }
             } catch (Exception e) {

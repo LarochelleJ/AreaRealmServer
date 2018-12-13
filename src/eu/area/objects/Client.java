@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.mina.core.session.IoSession;
 
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.security.MessageDigest;
@@ -31,11 +32,15 @@ public class Client {
     @Setter @Getter
     private Status status;
     private Compte compte;
+    private InetSocketAddress socketAddress;
+    private InetAddress inetAddress;
 
     public Client(IoSession session) {
         sessionId = session.getId();
         this.session = session;
         key = genKey();
+        socketAddress = (InetSocketAddress) session.getRemoteAddress();
+        inetAddress = socketAddress.getAddress();
     }
 
     public void send(String packet) {
@@ -54,8 +59,6 @@ public class Client {
                 }
                 break;
             case WAIT_ACCOUNT:
-                InetSocketAddress socketAddress = (InetSocketAddress) session.getRemoteAddress();
-                InetAddress inetAddress = socketAddress.getAddress();
                 compte = MySql.getAccountByName(args[0]);
                 Console.println(args[0] + " : " + inetAddress.getHostAddress(), Console.Color.GREEN);
                 if (compte == null) {
@@ -134,7 +137,14 @@ public class Client {
                         int idServeur = Integer.valueOf(packet.substring(2));
                         Serveur serveurCible = Main.getServeurs().get(idServeur);
                         if (compte.isVip() || compte.getGmLevel() >= serveurCible.getGmRequired()) {
-                            send("AYK" + (compte.getGmLevel() > 2 ? serveurCible.getIpAdmin() : serveurCible.getIpPlayer()) + ":" + serveurCible.getPort() + ";" + compte.getGuid());
+                            String ipOldLoader = compte.getGmLevel() > 2 ? serveurCible.getIpAdmin() : serveurCible.getIpPlayer(); // Le vieux loader ne supporte pas le IPv6
+                            String ip;
+                            if (inetAddress instanceof Inet6Address) { // IPv6
+                                ip = compte.getGmLevel() > 2 ? serveurCible.getIpv6Admin() : serveurCible.getIpv6();
+                            } else {
+                                ip = ipOldLoader;
+                            }
+                            send("AYK" + ipOldLoader + ":" + serveurCible.getPort() + ";" + compte.getGuid() + ";" + ip);
                         }
                         break;
                 }

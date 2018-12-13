@@ -30,16 +30,22 @@ public class Serveur {
     @Getter
     private String ipAdmin;
     @Getter
+    private String ipv6;
+    @Getter
+    private String ipv6Admin;
+    @Getter
     @Setter
     private boolean onlineBefore;
 
-    public Serveur(int id, int enabled, int gmRequired, String ip, String ipPlayer, int port, String ipAdmin) {
+    public Serveur(int id, int enabled, int gmRequired, String ip, String ipPlayer, String ipv6, int port, String ipAdmin, String ipv6Admin) {
         this.id = id;
         this.enabled = enabled == 1 ? true : false;
         this.gmRequired = gmRequired;
         this.ip = ip;
         this.ipPlayer = ipPlayer;
+        this.ipv6 = ipv6;
         this.ipAdmin = ipAdmin;
+        this.ipv6Admin = ipv6Admin;
         this.port = port;
         verifIfOnline();
         onlineBefore = online;

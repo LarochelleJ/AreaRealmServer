@@ -19,10 +19,15 @@ public class LoginHandler extends IoHandlerAdapter {
     public void sessionCreated(IoSession session) throws Exception {
         System.out.println(session.getRemoteAddress());
         Console.println("< Nouvelle session : " + session.getId(), Console.Color.CYAN);
-        Client client = new Client(session);
-        client.send("HC" + client.getKey());
-        client.setStatus(Client.Status.WAIT_VERSION);
-        Main.getClients().put(session.getId(), client);
+        if (Main.isMaintenance()) {
+            session.write("M040|Le serveur est en actuellement en maintenance, merci de votre compréhension. N'hésitez pas à rejoindre notre Discord !");
+            session.close(false);
+        } else {
+            Client client = new Client(session);
+            client.send("HC" + client.getKey());
+            client.setStatus(Client.Status.WAIT_VERSION);
+            Main.getClients().put(session.getId(), client);
+        }
     }
 
     @Override

@@ -16,8 +16,8 @@ public class Main {
     @Getter
     private static Config config;
     private static LoginServer login;
-    @Setter
-    private static boolean isRunning = true;
+    @Getter @Setter
+    private static boolean isRunning = true, maintenance = false;
     private static java.io.Console systemConsole = System.console();
     @Getter
     private static HashMap<Long, Client> clients = new HashMap<Long, Client>();
@@ -65,9 +65,18 @@ public class Main {
             case "exit":
                 isRunning = false;
                 break;
+            case "maintenance":
+                maintenance = !maintenance;
+                if (maintenance) {
+                    Console.println("Le serveur est désormais en mode maintenance", Console.Color.MAGENTA);
+                } else {
+                    Console.println("Le serveur n'est plus en mode maintenance", Console.Color.MAGENTA);
+                }
+                break;
             case "?":
                 Console.println("[Liste des commandes]", Console.Color.GREEN);
                 Console.println("exit - ferme le serveur", Console.Color.YELLOW);
+                Console.println("maintenance - active / désactive le mode maintenance", Console.Color.YELLOW);
                 Console.println("[Fin liste des commandes]", Console.Color.GREEN);
                 break;
             default:

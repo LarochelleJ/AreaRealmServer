@@ -162,7 +162,7 @@ public class Client {
             send("AlEb");
             kick();
         } else if (compte.isBlocked()) {
-            send("M0" + 667);
+            send("M0667");
             kick();
         } else if (!compte.isValid()) {
             send("AlEf");

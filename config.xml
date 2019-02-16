@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<config>
+	<database>
+		<host></host>
+		<user></user>
+		<password></password>
+		<name></name>
+	</database>
+
+	<server>
+		<login>
+			<ip></ip>
+			<port></port>
+			<version>1.29.1</version>
+		</login>
+		<exchange>
+			<ip></ip>
+			<port></port>
+		</exchange>
+	</server>
+
+	<GameServers>
+		<Server>
+			<id></id>
+			<ip></ip>
+			<ipPlayer></ipPlayer>
+			<ipv6></ipv6>
+			<ipAdmin></ipAdmin>
+			<ipv6Admin></ipv6Admin>
+			<port></port>
+			<enabled>1</enabled>
+			<gmAccess>0</gmAccess>
+		</Server>
+		<Server>
+			<id></id>
+			<ip></ip>
+			<ipPlayer></ipPlayer>
+			<ipv6></ipv6>
+			<ipAdmin></ipAdmin>
+			<ipv6Admin></ipv6Admin>
+			<port></port>
+			<enabled>1</enabled>
+			<gmAccess>0</gmAccess>
+		</Server>
+	</GameServers>
+</config>

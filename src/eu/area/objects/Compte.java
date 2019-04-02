@@ -39,19 +39,19 @@ public class Compte {
     public Compte(String password, String saltKey, int m_password, int banned, int logged, String pseudo, String question, int guid, String name, int gmLevel, int bannedTime, int vip, int m_reg) {
         this.password = password;
         this.saltKey = saltKey;
-        blocked = m_password > 0 ? true : false;
-        this.banned = banned > 0 ? true : false;
+        blocked = /*m_password > 0 ? true : false*/m_password > 0;
+        this.banned = /*banned > 0 ? true : false*/banned > 0;
         if (bannedTime != -1 && bannedTime < System.currentTimeMillis() / 1000) { // Banissement expiré, on le deban
             this.banned = false;
             MySql.unbanAccount(guid);
         }
-        this.logged = logged > 0 ? true : false;
+        this.logged = /*logged > 0 ? true : false*/logged > 0;
         this.pseudo = pseudo;
         this.question = question;
         this.guid = guid;
         this.name = name;
         this.gmLevel = gmLevel;
-        this.vip = vip > 0 ? true : false;
-        this.valid = m_reg > 0 ? false : true;
+        this.vip = /*vip > 0 ? true : false*/vip > 0;
+        this.valid = /*m_reg > 0 ? false : true*/ m_reg > 0;
     }
 }

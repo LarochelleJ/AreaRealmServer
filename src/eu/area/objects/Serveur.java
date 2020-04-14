@@ -36,10 +36,12 @@ public class Serveur {
     @Getter
     @Setter
     private boolean onlineBefore;
+    private int accessLevel;
 
-    public Serveur(int id, int enabled, int gmRequired, String ip, String ipPlayer, String ipv6, int port, String ipAdmin, String ipv6Admin) {
+    public Serveur(int id, int enabled, int gmRequired, String ip, String ipPlayer, String ipv6, int port, String ipAdmin, String ipv6Admin, int accessLevel) {
         this.id = id;
-        this.enabled = enabled == 1 ? true : false;
+        this.enabled = enabled == 1;
+        this.accessLevel = accessLevel;
         this.gmRequired = gmRequired;
         this.ip = ip;
         this.ipPlayer = ipPlayer;
@@ -60,5 +62,9 @@ public class Serveur {
         } catch (IOException e) {
             online = false;
         }
+    }
+
+    public boolean canAccess(Compte c){
+        return !((gmRequired != 0 && c.getGmLevel() < gmRequired) && (accessLevel != 0 && c.getAccessLevel() < accessLevel));
     }
 }

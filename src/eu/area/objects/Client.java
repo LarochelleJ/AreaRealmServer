@@ -126,7 +126,7 @@ public class Client {
                         String packetToSend = "AxK31556864852";
                         for (Serveur s : Main.getServeurs().values()) {
                             if (s.isEnabled()) {
-                                if (compte.isVip() || compte.getGmLevel() >= s.getGmRequired()) {
+                                if (s.canAccess(compte)) {
                                     packetToSend += "|" + s.getId() + ",5";
                                 }
                             }
@@ -136,7 +136,7 @@ public class Client {
                     case "AX":
                         int idServeur = Integer.valueOf(packet.substring(2));
                         Serveur serveurCible = Main.getServeurs().get(idServeur);
-                        if (compte.isVip() || compte.getGmLevel() >= serveurCible.getGmRequired()) {
+                        if (serveurCible.canAccess(compte)) {
                             String ipOldLoader = compte.getGmLevel() > 2 ? serveurCible.getIpAdmin() : serveurCible.getIpPlayer(); // Le vieux loader ne supporte pas le IPv6
                             String ip;
                             if (inetAddress instanceof Inet6Address) { // IPv6
@@ -177,7 +177,7 @@ public class Client {
         String packetToSend = "AH";
         for (Serveur s : Main.getServeurs().values()) {
             if (s.isEnabled()) {
-                if (compte != null && (compte.getGmLevel() >= s.getGmRequired() || compte.isVip())) {
+                if (compte != null && s.canAccess(compte)) {
                     int state = s.isOnline() == true ? 1 : 0;
                     packetToSend += s.getId() + ";" + state + ";0;1|";
                 }
